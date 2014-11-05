@@ -1,0 +1,20 @@
+{
+    "name": "aura-is-here/fire-and-forget",
+    "description": "A simple PHP library to just fire off an HTTP request and forget about it",
+    "authors": [
+        {
+            "name": "Caleb Fidecaro",
+            "email": "caleb@auraeq.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "AuraIsHere\\FireAndForget": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
