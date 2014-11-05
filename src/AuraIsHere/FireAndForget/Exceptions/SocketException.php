@@ -2,6 +2,7 @@
 
 use ErrorException;
 
-class SocketException extends ErrorException {
+class SocketException extends ErrorException
+{
 
 } 

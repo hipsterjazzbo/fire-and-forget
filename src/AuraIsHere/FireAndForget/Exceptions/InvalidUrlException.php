@@ -1,27 +1,28 @@
 <?php namespace AuraIsHere\FireAndForget\Exceptions;
 
-use InvalidArgumentException;
 use AuraIsHere\FireAndForget\Url;
+use InvalidArgumentException;
 
-class InvalidUrlException extends InvalidArgumentException {
+class InvalidUrlException extends InvalidArgumentException
+{
 
-	/**
-	 * @var \AuraIsHere\FireAndForget\Url
-	 */
-	private $url;
+    /**
+     * @var \AuraIsHere\FireAndForget\Url
+     */
+    private $url;
 
-	function __construct($message, Url $url)
-	{
-		parent::__construct($message, 500);
+    function __construct($message, Url $url)
+    {
+        parent::__construct($message, 500);
 
-		$this->url = $url;
-	}
+        $this->url = $url;
+    }
 
-	/**
-	 * @return Url
-	 */
-	public function getUrl()
-	{
-		return $this->url;
-	}
+    /**
+     * @return Url
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 }
