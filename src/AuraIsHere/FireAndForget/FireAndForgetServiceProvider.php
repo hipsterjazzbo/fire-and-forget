@@ -28,7 +28,7 @@ class FireAndForgetServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->singleton('FireAndForget', function ($app)
+		$this->app->singleton('fire-and-forget', function ($app)
 		{
 			$connectionTimeout = $app['config']->get('fire-and-forget::connection_timeout');
 
