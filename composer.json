@@ -1,6 +1,7 @@
 {
     "name": "aura-is-here/fire-and-forget",
     "description": "A simple PHP library to just fire off an HTTP request and forget about it",
+    "license": "MIT",
     "authors": [
         {
             "name": "Caleb Fidecaro",
