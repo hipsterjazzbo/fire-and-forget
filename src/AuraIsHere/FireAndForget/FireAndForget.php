@@ -1,5 +1,8 @@
 <?php namespace AuraIsHere\FireAndForget;
 
+use League\Url\UrlImmutable;
+use AuraIsHere\FireAndForget\Exceptions\SocketException;
+
 /**
  * Class FireAndForget
  *
@@ -60,12 +63,19 @@ class FireAndForget {
 	 * @param string $method
 	 * @param string $url
 	 * @param array  $params
+	 *
+	 * @throws SocketException
 	 */
 	private function fire($method, $url, $params)
 	{
-		$url     = new Url($url);
+		$url  = UrlImmutable::createFromUrl($url);
+		$host = $url->getHost();
+		$port = $url->getPort()->get() ?: $this->getDefaultPort($url->getScheme());
+
 		$request = $this->getRequest($method, $url, $params);
-		$socket  = fsockopen($url->getHost(), $url->getPort(), $errno, $errstr, $this->connectionTimeout);
+		$socket  = @fsockopen($host, $port, $errno, $errstr, $this->connectionTimeout);
+
+		if (! $socket) throw new SocketException($errstr, $errno);
 
 		fwrite($socket, $request);
 		fclose($socket);
@@ -82,9 +92,9 @@ class FireAndForget {
 	}
 
 	/**
-	 * @param string $method
-	 * @param string $url
-	 * @param array  $params
+	 * @param string       $method
+	 * @param UrlImmutable $url
+	 * @param array        $params
 	 *
 	 * @return string
 	 */
@@ -98,9 +108,9 @@ class FireAndForget {
 	}
 
 	/**
-	 * @param string $method
-	 * @param Url    $url
-	 * @param string $queryString
+	 * @param string       $method
+	 * @param UrlImmutable $url
+	 * @param string       $queryString
 	 *
 	 * @return string
 	 */
@@ -108,7 +118,7 @@ class FireAndForget {
 	{
 		$path = $method === 'GET' ? $url->getPath() . "?" . $queryString : $url->getPath();
 
-		$headers = $method . " " . $path . " HTTP/1.1\r\n";
+		$headers = $method . " /" . $path . " HTTP/1.1\r\n";
 		$headers .= "Host: " . $url->getHost() . "\r\n";
 		$headers .= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$headers .= "Content-Length: " . strlen($queryString) . "\r\n";
@@ -126,5 +136,29 @@ class FireAndForget {
 	private function getBody($method, $queryString)
 	{
 		return $method === 'GET' ? '' : $queryString;
+	}
+
+	/**
+	 * @param $scheme
+	 *
+	 * @return int
+	 */
+	private function getDefaultPort($scheme)
+	{
+		switch ($scheme)
+		{
+			case 'https':
+				$defaultPort = 443;
+				break;
+
+			case 'http':
+				$defaultPort = 80;
+				break;
+
+			default:
+				$defaultPort = 80;
+		}
+
+		return $defaultPort;
 	}
 }
