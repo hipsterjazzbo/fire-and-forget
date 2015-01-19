@@ -69,9 +69,10 @@ class FireAndForget
      */
     private function fire($method, $url, $params)
     {
-        $url  = UrlImmutable::createFromUrl($url);
-        $host = $url->getHost();
-        $port = $url->getPort()->get() ?: $this->getDefaultPort($url->getScheme());
+        $url    = UrlImmutable::createFromUrl($url);
+        $scheme = $url->getScheme()->get() === 'https' ? 'ssl://' : '';
+        $host   = $scheme . $url->getHost();
+        $port   = $url->getPort()->get() ?: $this->getDefaultPort($url->getScheme());
 
         $request = $this->getRequest($method, $url, $params);
         $socket  = @fsockopen($host, $port, $errno, $errstr, $this->connectionTimeout);
