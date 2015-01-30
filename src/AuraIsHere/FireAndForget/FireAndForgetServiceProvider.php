@@ -13,16 +13,6 @@ class FireAndForgetServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->package('aura-is-here/fire-and-forget');
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void
@@ -30,9 +20,7 @@ class FireAndForgetServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('fire-and-forget', function ($app) {
-            $connectionTimeout = $app['config']->get('fire-and-forget::connection_timeout');
-
-            return new FireAndForget($connectionTimeout);
+            return new FireAndForget;
         });
     }
 
