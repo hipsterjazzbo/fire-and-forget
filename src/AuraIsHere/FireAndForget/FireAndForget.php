@@ -1,7 +1,9 @@
 <?php namespace AuraIsHere\FireAndForget;
 
+use AuraIsHere\FireAndForget\Exceptions\InvalidUrlException;
 use AuraIsHere\FireAndForget\Exceptions\SocketException;
 use League\Uri\Schemes\Http as HttpUri;
+use RuntimeException;
 
 /**
  * Class FireAndForget
@@ -62,19 +64,24 @@ class FireAndForget
 
     /**
      * @param string $method
-     * @param string $uri
+     * @param string $url
      * @param array  $params
      *
      * @throws SocketException
      */
-    private function fire($method, $uri, $params)
+    private function fire($method, $url, $params)
     {
-        $uri    = HttpUri::createFromString($uri);
-        $scheme = $uri->getScheme() === 'https' ? 'ssl://' : '';
-        $host   = $scheme . $uri->getHost();
-        $port   = $uri->getPort() ?: $this->getDefaultPort($uri->getScheme());
+        try {
+            $url = HttpUri::createFromString($url);
+        } catch (RuntimeException $e) {
+            throw new InvalidUrlException($e->getMessage(), $url);
+        }
 
-        $request = $this->getRequest($method, $uri, $params);
+        $scheme = $url->getScheme() === 'https' ? 'ssl://' : '';
+        $host   = $scheme . $url->getHost();
+        $port   = $url->getPort() ?: $this->getDefaultPort($url->getScheme());
+
+        $request = $this->getRequest($method, $url, $params);
         $socket  = @fsockopen($host, $port, $errno, $errstr, $this->connectionTimeout);
 
         if (! $socket) {
@@ -97,15 +104,15 @@ class FireAndForget
 
     /**
      * @param string  $method
-     * @param HttpUri $uri
+     * @param HttpUri $url
      * @param array   $params
      *
      * @return string
      */
-    private function getRequest($method, $uri, $params)
+    private function getRequest($method, $url, $params)
     {
         $queryString = $this->buildQueryString($params);
-        $headers     = $this->getHeaders($method, $uri, $queryString);
+        $headers     = $this->getHeaders($method, $url, $queryString);
         $body        = $this->getBody($method, $queryString);
 
         return $headers . "\r\n" . $body;
@@ -113,17 +120,17 @@ class FireAndForget
 
     /**
      * @param string  $method
-     * @param HttpUri $uri
+     * @param HttpUri $url
      * @param string  $queryString
      *
      * @return string
      */
-    private function getHeaders($method, $uri, $queryString)
+    private function getHeaders($method, $url, $queryString)
     {
-        $path = $method === 'GET' ? $uri->getPath() . "?" . $queryString : $uri->getPath();
+        $path = $method === 'GET' ? $url->getPath() . "?" . $queryString : $url->getPath();
 
         $headers = $method . " /" . $path . " HTTP/1.1\r\n";
-        $headers .= "Host: " . $uri->getHost() . "\r\n";
+        $headers .= "Host: " . $url->getHost() . "\r\n";
         $headers .= "Content-Type: application/x-www-form-urlencoded\r\n";
         $headers .= "Content-Length: " . strlen($queryString) . "\r\n";
         $headers .= "Connection: Close\r\n";

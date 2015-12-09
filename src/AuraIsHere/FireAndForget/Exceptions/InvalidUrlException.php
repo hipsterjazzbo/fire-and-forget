@@ -1,17 +1,16 @@
 <?php namespace AuraIsHere\FireAndForget\Exceptions;
 
-use AuraIsHere\FireAndForget\Url;
 use InvalidArgumentException;
 
 class InvalidUrlException extends InvalidArgumentException
 {
 
     /**
-     * @var \AuraIsHere\FireAndForget\Url
+     * @var string
      */
     private $url;
 
-    function __construct($message, Url $url)
+    function __construct($message, $url)
     {
         parent::__construct($message, 500);
 
@@ -19,7 +18,7 @@ class InvalidUrlException extends InvalidArgumentException
     }
 
     /**
-     * @return Url
+     * @return string
      */
     public function getUrl()
     {
