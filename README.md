@@ -8,7 +8,7 @@ A simple PHP library to just fire off an HTTP request and forget about it
 To get started, require this package in your composer.json and run `composer update`:
 
 ```json
-"aura-is-here/fire-and-forget": "0.1.*"
+"hipsterjazzbo/fire-and-forget": "0.1.*"
 ```
 
 ### If you're using Laravel
@@ -16,19 +16,19 @@ To get started, require this package in your composer.json and run `composer upd
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`:
 
 ```php
-'AuraIsHere\FireAndForget\FireAndForgetServiceProvider',
+'HipsterJazzbo\FireAndForget\FireAndForgetServiceProvider',
 ```
 
 You'll probably want to set up the alias:
 
 ```php
-'FireAndForget' => 'AuraIsHere\FireAndForget\Facades\FireAndForgetFacade'
+'FireAndForget' => 'HipsterJazzbo\FireAndForget\Facades\FireAndForgetFacade'
 ```
 
 You could also publish the config file:
 
 ```bash
-php artisan config:publish aura-is-here/fire-and-forget
+php artisan config:publish hipsterjazzbo/fire-and-forget
 ```
 
 ## Usage

@@ -1,14 +1,14 @@
-<?php namespace AuraIsHere\FireAndForget;
+<?php namespace HipsterJazzbo\FireAndForget;
 
-use AuraIsHere\FireAndForget\Exceptions\InvalidUrlException;
-use AuraIsHere\FireAndForget\Exceptions\SocketException;
+use HipsterJazzbo\FireAndForget\Exceptions\InvalidUrlException;
+use HipsterJazzbo\FireAndForget\Exceptions\SocketException;
 use League\Uri\Schemes\Http as HttpUri;
 use RuntimeException;
 
 /**
  * Class FireAndForget
  *
- * @package AuraIsHere\FireAndForget
+ * @package HipsterJazzbo\FireAndForget
  */
 class FireAndForget
 {

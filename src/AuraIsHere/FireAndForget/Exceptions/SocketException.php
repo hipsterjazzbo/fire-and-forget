@@ -1,4 +1,4 @@
-<?php namespace AuraIsHere\FireAndForget\Exceptions;
+<?php namespace HipsterJazzbo\FireAndForget\Exceptions;
 
 use ErrorException;
 

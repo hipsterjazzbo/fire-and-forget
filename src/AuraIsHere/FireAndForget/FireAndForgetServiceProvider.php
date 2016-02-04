@@ -1,4 +1,4 @@
-<?php namespace AuraIsHere\FireAndForget;
+<?php namespace HipsterJazzbo\FireAndForget;
 
 use Illuminate\Support\ServiceProvider;
 

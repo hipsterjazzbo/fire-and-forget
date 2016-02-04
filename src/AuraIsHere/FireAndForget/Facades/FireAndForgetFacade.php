@@ -1,4 +1,4 @@
-<?php namespace AuraIsHere\FireAndForget\Facades;
+<?php namespace HipsterJazzbo\FireAndForget\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
