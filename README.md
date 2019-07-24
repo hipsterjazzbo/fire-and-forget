@@ -16,13 +16,13 @@ To get started, require this package in your composer.json and run `composer upd
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`:
 
 ```php
-'HipsterJazzbo\FireAndForget\FireAndForgetServiceProvider',
+AuraIsHere\FireAndForget\FireAndForgetServiceProvider::class,
 ```
 
 You'll probably want to set up the alias:
 
 ```php
-'FireAndForget' => 'HipsterJazzbo\FireAndForget\Facades\FireAndForgetFacade'
+'FireAndForget' => AuraIsHere\FireAndForget\Facades\FireAndForgetFacade::class
 ```
 
 You could also publish the config file:
